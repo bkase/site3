@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        copy:["PragmataPro2", "Courier New", "monospace"]
+      },
       // https://vercel.com/design/color
       colors: {
         vercel: {
