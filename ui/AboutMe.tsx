@@ -1,15 +1,12 @@
-import Link from "next/link";
+import CopyLink from "./CopyLink";
 
 export default function AboutMe() {
   return (
     <>
-      <div className="flex">
-        <div className="flex-initial mr-4">
-          <img className="inline-block h-44 w-44 rounded-full ring-2 ring-white" alt="Picture of brandon" src="/bkase-avatar-cartoon.jpeg" />
-        </div>
-        <div>
-          <p className="font-copy text-3xl leading-none"> Hi! I'm Brandon Kase, a permanentaly peripatetic pupil of typed functional programming (and eating good food). I build zk tools at <Link href="https://o1labs.org">O(1) Labs</Link> targeting <Link href="https://minaprotocol.com">Mina Protocol</Link>. Dm me on <Link href="https://twitter.com/bkase_">twitter @bkase_</Link>. I use <Link href="https://github.com/bkase"> github @bkase </Link> to build stuff. </p>
-        </div>
+      <div className="flex py-8 justify-center items-center -ml-2">
+        <img className="inline-block h-48 w-48 rounded-full ring-2 ring-navy mr-4" alt="Picture of brandon" src="/brandon-jacket.jpeg" />
+        <p className="inline-block font-friendly text-4xl leading-snug text-black"> 👋 I'm Brandon Kase, a peripatetic pupil of typed FP&nbsp;👨‍💻 (&#8288;and eating food 🍴&#8288;🍜&#8288;)&#8288;. I&nbsp;make zk tools 🔨⚡️ at <CopyLink href="https://o1labs.org">O(1)&nbsp;Labs</CopyLink> for <CopyLink href="https://minaprotocol.com">Mina&nbsp;Protocol</CopyLink>&nbsp;🪶&#8288;.
+        </p>
       </div>
     </>
   )

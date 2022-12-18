@@ -8,10 +8,16 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        copy:["PragmataPro2", "Courier New", "monospace"]
+        friendly:["News Cycle"],
+        copy:["PragmataPro2", "Courier New", "monospace"],
+        h1:["Futura-CondensedMedium", "AvenirNextCondensed-Medium", "HelveticaNeue-CondensedBold", "Ubuntu Condensed", "Liberation Sans Narrow", "Franklin Gothic Demi Cond", "Arial Narrow", "sans-serif-condensed", "Arial", "Trebuchet MS", "Lucida Grande", "Tahoma", "Verdana", "sans-serif"]
       },
-      // https://vercel.com/design/color
       colors: {
+        navy: '#01043E',
+        whiteyellow: '#fffee8', // inverse navy
+        black: '#000219',
+        green: '#1B998B',
+        orange: '#FC9E4F',
         vercel: {
           pink: '#FF0080',
           blue: '#0070F3',
