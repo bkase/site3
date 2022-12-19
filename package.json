@@ -18,12 +18,20 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@mdx-js/loader": "2.2.1",
+    "@mdx-js/react": "2.2.1",
     "@next/font": "13.0.6",
+    "@next/mdx": "13.0.7",
     "clsx": "1.2.1",
     "concurrently": "7.5.0",
+    "contentlayer": "0.2.9",
+    "date-fns": "2.29.3",
     "next": "latest",
+    "next-contentlayer": "0.2.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "rehype-katex": "6.0.2",
+    "remark-math": "5.1.1",
     "use-count-up": "3.0.1"
   },
   "devDependencies": {

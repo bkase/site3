@@ -1,8 +1,6 @@
 import '@/styles/dist.css';
 import React from 'react';
 import AboutMe from '@/ui/AboutMe';
-import Feed from '@/ui/Feed';
-import { sampleEntries } from '@/lib/entries';
 import CopyLink from '@/ui/CopyLink';
 
 import { News_Cycle } from '@next/font/google';
@@ -19,7 +17,7 @@ const newsCycle = News_Cycle({
   variable: '--font-newscycle'
 });
 
-export default function RootLayout() {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <head>
@@ -36,7 +34,7 @@ export default function RootLayout() {
           </div>
 
           <div className="space-y-6">
-            <Feed entries={sampleEntries} />
+            {children}
           </div>
         </div>
       </body>

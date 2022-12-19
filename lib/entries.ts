@@ -1,11 +1,13 @@
-export type Entry = {
-  kind: 'blog' | 'tweet';
-  title: string;
-  imgUrl: string;
-  date: Date;
-  summary: string;
-};
+import { allPosts, Post } from "contentlayer/generated"
+import { compareDesc } from "date-fns"
 
+export const posts : Post[] = allPosts
+  .filter((post) => post.published)
+  .sort((a, b) => {
+    return compareDesc(new Date(a.date), new Date(b.date))
+  });
+
+/*
 export const sampleEntries: Entry[] = [
   {
     kind: "tweet",
@@ -29,4 +31,4 @@ export const sampleEntries: Entry[] = [
     summary: "Semigroups and monoids are the two algebraic structures that are most useful to the working engineer. Discovering the algebra in our APIs give rise to a minimally complex and maximally expressive interface, and the shared vocabulary of these terms give rise to productive teams."
   },
 ];
-
+*/
