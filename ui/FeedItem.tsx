@@ -1,5 +1,6 @@
 import React from 'react';
 import { Entry } from '../lib/entries';
+import Image from 'next/image';
 
 export default function FeedItem({ entry }: { entry: Entry }) {
   const kindSpan = (() => {
@@ -12,7 +13,7 @@ export default function FeedItem({ entry }: { entry: Entry }) {
     <div>
       <div className="flex bg-whiteyellow py-4">
         <div className="relative h-64 w-64 shrink-0">
-          <img className="absolute top-0 inline-block h-64 w-64 mr-4 rounded-lg" src={entry.imgUrl} />
+          <Image width={256} height={256} className="absolute top-0 inline-block mr-4 rounded-lg" alt="preview image" src={entry.imgUrl} />
           <div className="absolute top-0 bg-gradient-to-b from-navy rounded-lg h-full">
             <h2 className="inline-block p-3 text-4xl text-whiteyellow font-h1 uppercase">{entry.title}</h2>
             <h3 className="inline-block ml-3 text-2xl text-whiteyellow font-h1 uppercase">

@@ -1,8 +1,0 @@
-@font-face {
-  font-family: "PragmataPro2";
-  src: url('/fonts/essentialpro.woff');
-  src: local('PragmataPro'),
-       url('/fonts/essentialpro.woff2') format('woff2'),
-       url('/fonts/essentialpro.woff') format('woff');
-}
-

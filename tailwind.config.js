@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        friendly:["News Cycle"],
-        copy:["PragmataPro2", "Courier New", "monospace"],
+        friendly:['var(--font-newscycle)', 'sans-serif'],
+        copy:['var(--font-pragmatapro)', "Courier New", "monospace"],
         h1:["Futura-CondensedMedium", "AvenirNextCondensed-Medium", "HelveticaNeue-CondensedBold", "Ubuntu Condensed", "Liberation Sans Narrow", "Franklin Gothic Demi Cond", "Arial Narrow", "sans-serif-condensed", "Arial", "Trebuchet MS", "Lucida Grande", "Tahoma", "Verdana", "sans-serif"]
       },
       colors: {

@@ -5,16 +5,27 @@ import Feed from '@/ui/Feed';
 import { sampleEntries } from '@/lib/entries';
 import CopyLink from '@/ui/CopyLink';
 
+import { News_Cycle } from '@next/font/google';
+import localFont from '@next/font/local';
+
+const pragmataPro = localFont({
+  src: './fonts/essentialpro.woff2',
+  variable: '--font-pragmatapro'
+});
+
+const newsCycle = News_Cycle({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-newscycle'
+});
+
 export default function RootLayout() {
   return (
     <html>
       <head>
-        <link rel="stylesheet" href="/fonts/fonts.css" />
-        <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=News%20Cycle" />
         <title>Bkase dev</title>
       </head>
-      <body className="">
+      <body className={`${pragmataPro.variable} ${newsCycle.variable} font-friendly`}>
         <div className="container mx-auto">
           <div className="">
             <AboutMe />

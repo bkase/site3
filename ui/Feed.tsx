@@ -7,8 +7,8 @@ export default function Feed({ entries }: { entries: Entry[] }) {
     <div className="py-8">
       <h1 className="inline-block text-7xl font-h1 uppercase mb-4 text-navy"> My musings </h1>
       <ul className="mt-4">
-        {entries.map(entry => (
-          <li className="mt-2">
+        {entries.map((entry, i) => (
+          <li className="mt-2" key={i}>
             <FeedItem entry={entry} />
           </li>
         ))}
