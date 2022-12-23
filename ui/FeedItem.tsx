@@ -1,6 +1,7 @@
 import React from 'react';
 import { Post } from 'contentlayer/generated';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function FeedItem({ post }: { post: Post }) {
   const kindSpan = (() => {
@@ -11,7 +12,7 @@ export default function FeedItem({ post }: { post: Post }) {
   })();
   return (
     <div>
-      <div className="flex bg-whiteyellow py-4">
+      <Link href={post.slug} className="flex bg-whiteyellow py-4">
         <div className="relative h-64 w-64 shrink-0">
           <Image width={256} height={256} className="absolute top-0 inline-block mr-4 rounded-lg" alt="preview image" src={post.image} />
           <div className="absolute top-0 bg-gradient-to-b from-navy rounded-lg h-full">
@@ -23,7 +24,7 @@ export default function FeedItem({ post }: { post: Post }) {
           <p className="text-2xl font-copy px-2 ml-2 leading-snug text-navy">
             {post.summary}
           </p>
-      </div>
+      </Link>
     </div>
   )
 }
