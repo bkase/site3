@@ -28,9 +28,7 @@ The associativity law demands $\forall x, y, z. (x \oplus y) \oplus z = x \oplus
 
 Since it's hard to type $\oplus$ in our programming development environments, we typically use `<>` to denote this operation. If the operation happens to be commutative[^7] as well, we use `+` -- though in ML langs we need to make an exception.
 
-<MultiCodeBlock>
-
-```ocaml
+```ocaml semigroup.ml focus=1[2:5]
 module type Semigroup = sig
   type t
 
@@ -39,19 +37,18 @@ module type Semigroup = sig
 end
 ```
 
-```haskell
+```haskell semigroup.hs
 -- You can find this in Data.Semigroup
 class Semigroup a where
   (<>) :: a -> a -> a
 ```
 
-```swift
+```swift semigroup.swift key=3
 protocol Semigroup {
   static func <>(a: Self, b: Self) -> Self
 }
 ```
 
-</MultiCodeBlock>
 
 Instances of semigroups are instances of the corresponding signature/protocol/type class:
 

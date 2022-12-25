@@ -18,13 +18,8 @@ module.exports = {
         black: '#000219',
         green: '#1B998B',
         orange: '#FC9E4F',
-        vercel: {
-          pink: '#FF0080',
-          blue: '#0070F3',
-          cyan: '#50E3C2',
-          orange: '#F5A623',
-          violet: '#7928CA',
-        },
+        lightgrey: '#F2F2F5',
+        lightestgrey: '#F7F7F9',
       },
       keyframes: ({ theme }) => ({
         rerender: {
