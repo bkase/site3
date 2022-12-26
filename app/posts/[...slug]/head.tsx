@@ -20,6 +20,7 @@ export default function MdxHead({ params }: MdxHeadProps) {
     <>
       <title>{title}</title>
       <meta name="description" content={mdxPost.summary} />
+      <link rel="stylesheet" href="/ch-overrides.css" precedence="default" />
     </>
   )
 }

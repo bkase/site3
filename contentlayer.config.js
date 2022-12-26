@@ -6,7 +6,9 @@ import rehypeKatex from 'rehype-katex';
 import { remarkCodeHike } from "@code-hike/mdx"
 import { createRequire } from "module"
 const require_ = createRequire(import.meta.url)
-const theme = require_("shiki/themes/solarized-light.json")
+import theme from "./theme.js"
+
+import rehypeFootnote from './rehypeFootnote';
 
 
 /** @type {import('contentlayer/source-files').ComputedFields} */
@@ -55,11 +57,14 @@ export default makeSource({
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [
-      [ remarkCodeHike, { theme } ],
+      [ remarkCodeHike, { theme, lineNumbers: true } ],
       remarkMath,
       remarkGfm,
     ],
-    rehypePlugins: [rehypeKatex]
+    rehypePlugins: [
+      rehypeKatex,
+      rehypeFootnote
+    ]
   },
 })
 

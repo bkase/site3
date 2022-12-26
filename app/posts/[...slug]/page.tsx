@@ -37,9 +37,11 @@ const Mdx = ({ code } : {code: string}) => {
       code: ({ className, children }) => (
         <code className={className+" font-copy bg-lightgrey px-1.5 py-1 rounded-md"}>{children}</code>
       ),
-      CHCode: CH.Code,
       MultiCodeBlock: ({ className, children }) => (
         <div className={className}>{children}</div>
+      ),
+      HalfImageWrapper: ({ children }) => (
+        <div className="w-1/2 md:w-full">{children}</div>
       )
     }} />
   )
@@ -93,7 +95,7 @@ export default function PostPage({ params }: PostPageProps) {
               src={post.image}
               alt={post.title}
               width={720}
-              height={405}
+              height={720}
               className="my-6 rounded-md border"
               priority
             />

@@ -1,7 +1,7 @@
 ---
 title: Semigroups and Monoids
 summary: Semigroups and monoids are the two algebraic structures that are most useful to the working engineer. Discovering the algebra in our APIs give rise to a minimally complex and maximally expressive interface, and the shared vocabulary of these terms give rise to productive teams.
-image: /semigroups-and-monoids-title.png
+image: /static/posts/semigroups-and-monoids/title.png
 date: "2020-02-16"
 ---
 
@@ -28,7 +28,9 @@ The associativity law demands $\forall x, y, z. (x \oplus y) \oplus z = x \oplus
 
 Since it's hard to type $\oplus$ in our programming development environments, we typically use `<>` to denote this operation. If the operation happens to be commutative[^7] as well, we use `+` -- though in ML langs we need to make an exception.
 
-```ocaml semigroup.ml focus=1[2:5]
+<CH.Code>
+
+```ocaml OCaml
 module type Semigroup = sig
   type t
 
@@ -37,24 +39,25 @@ module type Semigroup = sig
 end
 ```
 
-```haskell semigroup.hs
+```haskell Haskell
 -- You can find this in Data.Semigroup
 class Semigroup a where
   (<>) :: a -> a -> a
 ```
 
-```swift semigroup.swift key=3
+```swift Swift
 protocol Semigroup {
   static func <>(a: Self, b: Self) -> Self
 }
 ```
 
+</CH.Code>
 
 Instances of semigroups are instances of the corresponding signature/protocol/type class:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module Sum : Semigroup = struct
   type t = int
 
@@ -62,13 +65,13 @@ module Sum : Semigroup = struct
 end
 ```
 
-```haskell
+```haskell Haskell
 newtype Sum = Sum Int
 instance Semigroup Sum where
   (Sum x) <> (Sum y) = Sum (x + y)
 ```
 
-```swift
+```swift Swift
 struct Sum { let v: Int }
 extension Sum : Semigroup {
   func <>(a: Sum, b: Sum) -> Sum {
@@ -77,15 +80,15 @@ extension Sum : Semigroup {
 }
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 Algebraic properties give us magical powers. Associativity gives the programmer and the runtime the freedom to re-associate chunks of work.
 
 As programmers, we get to choose grouping together operations in whichever way we feel is most appropriate for the situation.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 let xy = x + y in
 let all = xy + z in
 (* or *)
@@ -94,50 +97,50 @@ let all = x + y + z in
 (* ... *)
 ```
 
-```haskell
+```haskell Haskell
 xy = x <> y
 all = xy <> z
 -- or
 all = x <> y <> z
 ```
 
-```swift
+```swift Swift
 let xy = x <> y
 let all = xy <> z
 // or
 let all = x <> y <> z
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 On the other hand, the machine can choose to schedule this work whenever it
 pleases. As a consequence, semigroups can hook into many pieces of machinery in
 other libraries and frameworks, for example, we can use the associativity to imbue parallelism into our work for free!
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 (* Work to do: x + y + z + w *)
 let xy = x + y in (* thread1 *)
 let zw = z + w in (* thread2 *)
 xy + zw
 ```
 
-```haskell
+```haskell Haskell
 -- Work to do: x + y + z + w
 let xy = x <> y in -- thread1
 let zw = z <> w in -- thread2
 xy <> zw
 ```
 
-```swift
+```swift Swift
 // Work to do: x + y + z + w
 let xy = x <> y // thread1
 let zw = z <> w // thread2
 xy <> zw
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 Associativity is a very common property, so whenever you find yourself with a binary operation &mdash; it's worth asking: Is this associative &mdash; is this a semigroup?
 
@@ -149,47 +152,47 @@ To be a valid identity, the following law must hold: $\forall x. x \oplus \epsil
 
 Since it's hard to type $\epsilon$ in our programming development environments, we typically use `empty` to denote this operation.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module type Monoid = sig
   include Semigroup
   val empty : t
 end
 ```
 
-```haskell
+```haskell Haskell
 class Semigroup a => Monoid a where
   mempty :: a
 ```
 
-```swift
+```swift Swift
 protocol Monoid : Semigroup {
   static var empty : Self { get }
 }
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 An example instance:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module ListM : Monoid = struct
   include ListS (* a semigroup *)
   let empty = []
 end
 ```
 
-```haskell
+```haskell Haskell
 newtype ListM a = ListM (List a)
 instance Semigroup (ListM a) -- ...
 instance Monoid (ListM a) where
   empty = ListM []
 ```
 
-```swift
+```swift Swift
 struct ListM<A> { let v: [A] }
 extension ListM : Semigroup { /* ... */ }
 extension ListM : Monoid {
@@ -197,13 +200,13 @@ extension ListM : Monoid {
 }
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 The power of an identity is that there always exists a default or a known empty. Monoids let us "drop the option":
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 let annoyinglyNeedsOption =
   if computation() then Some (x + y) else None
 (* to *)
@@ -211,7 +214,7 @@ let expressiveNoNeedOption =
   if computation() then x + y else M.empty
 ```
 
-```haskell
+```haskell Haskell
 annoyinglyNeedsMaybe :: Maybe a
 annoyinglyNeedsMaybe =
   if computation then Just (x <> y) else None
@@ -221,7 +224,7 @@ expressiveNoNeedMaybe x =
   if computation then x else mempty
 ```
 
-```swift
+```swift Swift
 func annoyinglyNeedMaybe<M>() -> M? {
   return computation ? x <> y : nil
 }
@@ -231,7 +234,7 @@ func expressiveNoNeedMaybe<M: Monoid>() -> M {
 }
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 Monoids are the building blocks of composition. And composition leads to clean, simple, and expressive code. Moreover, when you and your colleagues can speak about these abstract notions concretely you get a huge productivity boost!
 
