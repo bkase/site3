@@ -35,3 +35,19 @@
   font-family: var(--font-pragmatapro), "Courier New", "monospace";
   font-size: 1.125rem;
 }
+
+.ch-codegroup .ch-editor-tab {
+  flex-shrink: 0;
+}
+
+.ch-codegroup .ch-frame-title-bar {
+  overflow: auto;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.ch-codegroup .ch-frame-title-bar::-webkit-scrollbar {
+  display: none;
+}
+
+

@@ -11,9 +11,9 @@ Reducers &mdash; a tool for handling state changes &mdash; help engineers manage
 
 I expect readers to be familiar with the material covered in the [first post on semigroups and monoids](/posts/semigroups-and-monoids), but to keep this post more or less self-contained I'll review the declaration of semigroups and monoids here:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module type Semigroup = sig
   type t
 
@@ -27,7 +27,7 @@ module type Monoid = sig
 end
 ```
 
-```typescript
+```typescript Typescript
 interface Semigroup<A> {
   concat: (x: A, y: A) => A
 }
@@ -37,7 +37,7 @@ interface Monoid<A> extends Semigroup<A> {
 }
 ```
 
-```haskell
+```haskell Haskell
 class Semigroup a where
   (<>) :: a -> a -> a
 
@@ -45,7 +45,7 @@ class Semigroup a => Monoid a where
   mempty :: a
 ```
 
-```swift
+```swift Swift
 protocol Semigroup {
   static func <>(a: Self, b: Self) -> Self
 }
@@ -55,7 +55,7 @@ protocol Monoid : Semigroup {
 }
 ```
 
-```fsharp
+```fsharp F#
 type Semigroup<'a> =
     abstract member concat: 'a -> 'a -> 'a
 
@@ -64,7 +64,7 @@ type Monoid<'a> =
     abstract member empty: 'a
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ## Endofunctions are monoids
 
@@ -72,39 +72,39 @@ Endofunctions, or in source code, `Endo`,  are functions from some type to itsel
 
 To see this, let's first implement endofunctions:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module Endo (A: sig type t end) = struct
   type t = A.t -> A.t
 end
 ```
 
-```typescript
+```typescript Typescript
 interface Endo<A> {
     (x: A): A
 }
 ```
 
-```haskell
+```haskell Haskell
 newtype Endo a = Endo (a -> a)
 ```
 
-```swift
+```swift Swift
 struct Endo<A> { let run: (A) -> A }
 ```
 
-```fsharp
+```fsharp F#
 type Endo<'a> = 'a -> 'a
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 And then consider a `Person` object/record/struct
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module Person = struct
   type t =
     { name: string
@@ -113,41 +113,41 @@ module Person = struct
 end
 ```
 
-```typescript
+```typescript Typescript
 interface Person {
   name: string
   age: number
 }
 ```
 
-```haskell
+```haskell Haskell
 data Person = Person
   { name: String
   , age: Int
   }
 ```
 
-```swift
+```swift Swift
 struct Person {
   var name: String
   var age: Int
 }
 ```
 
-```fsharp
+```fsharp F#
 type Person = {
     name : string
     age : int
 }
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 A person, Fred, can age one year like so:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module PersonEndo = Endo(struct type t = Person.t end)
 let oneYearOlder : PersonEndo.t = fun p -> { p with age = p.age + 1 }
 
@@ -157,7 +157,7 @@ let agedFred =
   fred' (* { name = "Fred", age = 21 } *)
 ```
 
-```typescript
+```typescript Typescript
 const oneYearOlder: Endo<Person> = p => ({ ...p, age: p.age + 1 });
 
 const agedFred = () => {
@@ -167,7 +167,7 @@ const agedFred = () => {
 }
 ```
 
-```haskell
+```haskell Haskell
 oneYearOlder :: Endo Person
 oneYearOlder = Endo $ \p -> p { age = age p + 1 }
 
@@ -178,7 +178,7 @@ agedFred =
   fred' (* { name = "Fred", age = 21 } *)
 ```
 
-```swift
+```swift Swift
 // it looks like we're mutating here, but due to value semantics of
 // structs in Swift, this is fine
 let oneYearOlder: Endo<Person> =
@@ -191,7 +191,7 @@ let agedFred = { () in
 }
 ```
 
-```fsharp
+```fsharp F#
 let oneYearOlder: Endo<Person> = fun p -> { p with age = p.age + 1 }
 
 let agedFred =
@@ -200,7 +200,7 @@ let agedFred =
     fred_
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 Notice a few interesting facts here:
 
@@ -211,9 +211,9 @@ Notice a few interesting facts here:
 
 The semigroup instance on endofunctions gives us a way to combine two changes into a single change. Concretely, we may want to also change our name field to add a last name, for example, we want to `addLastNameSmith`:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 let oneYearOlder : PersonEndo.t = fun p -> { p with age = p.age + 1 }
 let addLastNameSmith : PersonEndo.t = fun p -> { p with name = p.name ^ " Smith" }
 
@@ -224,7 +224,7 @@ let agedFred =
   fred' (* { name = "Fred Smith", age = 21 } *)
 ```
 
-```typescript
+```typescript Typescript
 const oneYearOlder: Endo<Person> = p => ({ ...p, age: p.age + 1 });
 const addLastNameSmith: Endo<Person> = p => ({ ...p, name: p.name + " Smith" });
 
@@ -239,7 +239,7 @@ const agedFred = () => {
 }
 ```
 
-```haskell
+```haskell Haskell
 oneYearOlder :: Endo Person
 oneYearOlder = Endo $ \p -> p { age = age p + 1 }
 
@@ -254,7 +254,7 @@ agedFred =
   fred' (* { name = "Fred Smith", age = 21 } *)
 ```
 
-```swift
+```swift Swift
 let oneYearOlder: Endo<Person> =
   Endo { p in p.age = p.age+1; return p }
 
@@ -269,7 +269,7 @@ let agedFred = { () in
 }
 ```
 
-```fsharp
+```fsharp F#
 let oneYearOlder: Endo<Person> = fun p -> { p with age = p.age + 1 }
 let addLastNameSmith: Endo<Person> = fun p -> { p with name = p.name + " Smith" }
 
@@ -280,15 +280,15 @@ let agedFred =
     fred_
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ### The Monoid
 
 The monoid instance provides a way to model a trivial change[^3]. With this addition, we now have a nice base case if we're building up an arbitrary amount of changes based on some runtime information:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 let change = PersonEndo.empty in
 (* ... *)
 let change =
@@ -302,7 +302,7 @@ in
 (* etc *)
 ```
 
-```typescript
+```typescript Typescript
 var change = endoMonoid<Person>.empty in
 // ...
 change =
@@ -313,7 +313,7 @@ change =
 // etc
 ```
 
-```haskell
+```haskell Haskell
 let change = mempty in
 -- ...
 let change =
@@ -326,7 +326,7 @@ in
 -- etc
 ```
 
-```swift
+```swift Swift
 var change = Endo<Person>.empty
 // ...
 change =
@@ -335,14 +335,14 @@ change =
 // etc
 ```
 
-```fsharp
+```fsharp F#
 let change = PersonEndo.empty
 (* ... *)
 let change2 = PersonEndo.concat change (if aYearPasses then oneYearOlder else PersonEndo.empty)
 (* etc *)
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 We can further improve on the above by utilizing a [writer monad as described in an older post](/posts/ocaml-writer) to remove all of the boilerplate doing something like the above.
 
@@ -350,9 +350,9 @@ We can further improve on the above by utilizing a [writer monad as described in
 
 An astute reader may notice "combining changes" is function composition or $\circ$, and the trivial change is the identity function or $id$. Thus the monoid we've been talking about this whole time is $(Endo_A, \circ, id_A)$[^4].
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module Endo (A: sig type t end) = struct
   type t = A.t -> A.t
 
@@ -362,14 +362,14 @@ module Endo (A: sig type t end) = struct
 end
 ```
 
-```typescript
+```typescript Typescript
 const endoMonoid: <A>() => Monoid<Endo<A>> = () => ({
     concat: (f, g) => x => f(g(x)),
     empty: x => x
 });
 ```
 
-```haskell
+```haskell Haskell
 -- This is defined in Data.Monoid.Endo
 instance Semigroup (Endo a) where
   (Endo f) <> (Endo g) = Endo $ f . g
@@ -377,7 +377,7 @@ instance Monoid (Endo a) where
   mempty = Endo id
 ```
 
-```swift
+```swift Swift
 extension Endo : Semigroup {
   static func <>(f: Endo, g: Endo) -> Endo {
     Endo { x in f(g(x)) }
@@ -388,7 +388,7 @@ extension Endo : Monoid {
 }
 ```
 
-```fsharp
+```fsharp F#
 type EndoMonoid<'a> () =
     interface Monoid<Endo<'a>> with
         member _.empty = fun x -> x
@@ -399,15 +399,15 @@ type EndoMonoid<'a> () =
 let PersonEndo = (new EndoMonoid<Person> ()) :> Monoid<Endo<Person>>
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ## Pointwise operations over monoids are monoids
 
 A _pointwise operation_ is some operation $\oplus$ on some type $T$ that is "lifted" to act on functions that return $T$. More formally, $\forall f,g. (f \oplus g)(x) = x \rightarrow f(x) \oplus g(x)$. If code is your thing, what follows is the function that lifts a binary operation pointwise:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 (* val liftPointwise :
     (       'a  ->        'a ->         'a) ->
     (('x -> 'a) -> ('x -> 'a) -> ('x -> 'a)) *)
@@ -415,7 +415,7 @@ let liftPointwise op = fun f1 f2 -> fun x ->
   op (f1 x) (f2 x)
 ```
 
-```typescript
+```typescript Typescript
 const liftPointwise_:
     <X, A>(op: ( x: A,            y: A)     => A) =>
                (f1: (x: X) => A, f2: (x: X) => A) =>
@@ -423,7 +423,7 @@ const liftPointwise_:
         op => (f1, f2) => x => op(f1(x), f2(x))
 ```
 
-```haskell
+```haskell Haskell
 liftPointwise ::
   (      a  ->       a  ->       a) ->
   ((x -> a) -> (x -> a) -> (x -> a)
@@ -431,7 +431,7 @@ liftPointwise op = \f1 f2 -> \x ->
   op (f1 x) (f2 x)
 ```
 
-```swift
+```swift Swift
 func liftPointwise<X, A>(
   op: @escaping (A,                  A)       -> A
 ) -> (@escaping (X) -> A, @escaping (X) -> A) -> (X) -> A {
@@ -439,7 +439,7 @@ func liftPointwise<X, A>(
 }
 ```
 
-```fsharp
+```fsharp F#
 (* val liftPointwise :
     op: ('a -> 'b -> 'c) -> f1:('d -> 'a) -> f2:('d -> 'b) -> x:'d -> 'c *)
 let liftPointwise op = fun f1 f2 -> fun x -> op (f1 x) (f2 x)
@@ -447,13 +447,13 @@ let liftPointwise op = fun f1 f2 -> fun x -> op (f1 x) (f2 x)
 let liftPointwise op f1 f2 x = op (f1 x) (f2 x)
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 An interesting property of pointwise operations is that if the underlying operation is a monoid[^5] then the resulting pointwise operation is a monoid too! I think a nice proof of this is to show the source code that performs this operation for us.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 module LiftPointwise(M: Monoid) = struct
   type 'x t = 'x -> M.t
 
@@ -463,7 +463,7 @@ module LiftPointwise(M: Monoid) = struct
 end
 ```
 
-```typescript
+```typescript Typescript
 interface Func<X, A> {
     (x: X): A
 }
@@ -474,7 +474,7 @@ const liftPointwise: <X, A>(m: Monoid<A>) => Monoid<Func<X, A>> = m => ({
 })
 ```
 
-```haskell
+```haskell Haskell
 -- This is defined in Data.Semigroup
 instance Semigroup a => Semigroup (x -> a) where
   (<>) f1 f2 = \x -> (f1 x) <> (f2 x)
@@ -483,7 +483,7 @@ instance Monoid a => Monoid (x -> a) where
   mempty = \_x -> mempty
 ```
 
-```swift
+```swift Swift
 struct Func<X, A> {
   let run: (X) -> A
 }
@@ -503,7 +503,7 @@ extension Func: Monoid where A: Monoid {
 }
 ```
 
-```fsharp
+```fsharp F#
 type LiftPointWise<'x, 'a> (m: Monoid<'a>) =
     interface Monoid<'x -> 'a> with
         member _.empty = fun _ -> m.empty
@@ -512,7 +512,7 @@ type LiftPointWise<'x, 'a> (m: Monoid<'a>) =
         member _.concat f1 f2 = fun x -> m.concat (f1 x) (f2 x)
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 Sometimes you want to manipulate functions over the operations rather than the underlying operations themselves. The nice thing is we don't have to give up our monoidal superpowers when we do so!
 
@@ -524,29 +524,29 @@ Reducers are one way to cleanly declare atomic chunks of state manipulation in r
 
 Let's take [Redux](https://redux.js.org/basics/reducers/) reducers as an example to explore further. According to the [official documentation](https://redux.js.org/basics/reducers/), a reducer is defined by a function from the previous state and an action into a new state $(S, A) \rightarrow S$. In theory, we would feed some library a bunch of these reducers and in our application we could fire actions to trigger these state changes. In code, this definition of a reducer looks as follows:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 let reducer : 'state * 'action -> 'state = ()
 ```
 
-```typescript
+```typescript Typescript
 const reducer: <S,A>(state: S, action: A) => S
 ```
 
-```haskell
+```haskell Haskell
 reducer :: (state, action) -> state
 ```
 
-```swift
+```swift Swift
 func reducer<S,A>(state: S, action: A) -> S
 ```
 
-```fsharp
+```fsharp F#
 type reducer<'state, 'action> = 'state * 'action -> 'state
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 In Redux, reducers can be combined with a `combineReducers` function, but it's not immediately obvious exactly how this function would work.
 
@@ -554,9 +554,9 @@ In Redux, reducers can be combined with a `combineReducers` function, but it's n
 
 Redux is great because it introduced the concept of reducers to the masses. But instead of using a library directly, let's re-arrange Redux's reducer function a bit to see if we can build the library ourselves.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```ocaml
+```ocaml OCaml
 let reducer : 'state * 'action -> 'state = ()
 (* flip the tuple *)
 let reducer : 'action * 'state -> 'state = ()
@@ -569,7 +569,7 @@ let reducer : 'action -> StateEndo.t = ()
    a monoid. *)
 ```
 
-```typescript
+```typescript Typescript
 const reducer: <S,A>(state: S, action: A) => S
 // flip the parameters
 const reducer: <S,A>(action: A, state: S) => S
@@ -584,7 +584,7 @@ const reducer: <S,A>() => Func<A, Endo<S>>
 // a monoid.
 ```
 
-```haskell
+```haskell Haskell
 reducer :: (state, action) -> state
 -- flip the tuple
 reducer :: (action, state) -> state
@@ -597,7 +597,7 @@ reducer :: action -> Endo state
 -- a monoid.
 ```
 
-```swift
+```swift Swift
 func reducer<S,A>(state: S, action: A) -> S
 // flip the parameters
 func reducer<S,A>(action: A, state: S) -> S
@@ -612,7 +612,7 @@ func reducer<S,A>() -> Func<A, Endo<S>>
 // a monoid.
 ```
 
-```fsharp
+```fsharp F#
 type reducer<'state, 'action> = 'state * 'action -> 'state
 // flip the tuple
 type reducer<'state, 'action> = 'action * 'state -> 'state
@@ -624,7 +624,7 @@ type reducer<'state, 'action> = 'action -> Endo<'state>
 // and it's a pointwise function into a monoid
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 And we have a monoid! You could say a reducer is just the $Endo_{state}$ monoid lifted pointwise over actions. The monoid is precisely why using reducers is a nice way to decompose and reason about state changes in your application: Breaking down problems into pieces makes them more manageable, and the identity and associativity of the monoid means gluing them back together is easy. In fact, with our monoid instance on the manipulated reducer the $\epsilon$ and $\oplus$ give us a Redux-like library for free.
 

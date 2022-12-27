@@ -57,7 +57,7 @@ export default makeSource({
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [
-      [ remarkCodeHike, { theme, lineNumbers: true } ],
+      [ remarkCodeHike, { theme } ],
       remarkMath,
       remarkGfm,
     ],

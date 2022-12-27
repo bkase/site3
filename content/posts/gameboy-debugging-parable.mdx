@@ -125,36 +125,36 @@ Two functions $f : A \rightarrow B$ and $p : B \rightarrow (A+1)$ define a parti
 
 If you prefer code:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```rust
+```rust Rust
 trait PartialIso<A, B> {
   fn full(a: A) -> B;
   fn partial(b: B) -> Option<A>;
 }
 ```
 
-```haskell
+```haskell Haskell
 class PartialIso a b where
   full :: a -> b
   partial :: b -> Maybe a
 ```
 
-```swift
+```swift Swift
 struct PartialIso<A, B> {
   let full: (A) -> B
   let partial: (B) -> A?
 }
 ```
 
-```typescript
+```typescript Typescript
 interface PartialIso<A, B> {
   full: (a: A) => B,
   partial: (b: B) => A?
 }
 ```
 
-```ocaml
+```ocaml OCaml
 module type PartialIso = sig
   type a
   type b
@@ -164,13 +164,13 @@ module type PartialIso = sig
 end
 ```
 
-```fsharp
+```fsharp F#
 type PartialIso<'a, 'b> =
     abstract member full: 'a -> 'b
     abstract member partial: 'b -> 'a option
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 Note that the equations that help define partial isomorphism become laws[^9] on the `PartialIso` type we've defined in code.
 

@@ -3,7 +3,7 @@ module.exports = {
   type: "light",
   colors: {
     "editor.background": "#f7f7f9",
-    "editor.foreground": "#fafafa",
+    "editor.foreground": "#3c3836",
     "activityBar.background": "#f7f7f9",
     "sideBar.background": "#1A2652",
     "editorGroupHeader.tabsBackground": "#ffffff",

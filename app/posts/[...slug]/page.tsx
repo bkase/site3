@@ -4,9 +4,9 @@ import { notFound } from "next/navigation"
 import { allPosts } from "contentlayer/generated"
 import Image from "next/image"
 import CopyLink from "@/ui/CopyLink"
+import GameboyView from "@/ui/GameboyView"
 
 import { useMDXComponent } from "next-contentlayer/hooks"
-import { CH } from "@code-hike/mdx/components"
 
 const Mdx = ({ code } : {code: string}) => {
   const Component = useMDXComponent(code);
@@ -23,10 +23,13 @@ const Mdx = ({ code } : {code: string}) => {
         <h3 className={className+" font-copy text-lg font-bold mb-2 py-2"}>{children}</h3>
       ),
       ol: ({ className, children }) =>(
-        <ol className={className+" font-copy leading-relaxed text-lg ml-8 mb-2 list-decimal"}>{children}</ol>
+        <ol className={className+" font-copy leading-relaxed text-lg ml-6 mb-2 list-decimal list-outside"}>{children}</ol>
       ),
       ul: ({ className, children }) =>(
-        <ul className={className+" font-copy leading-relaxed text-lg ml-8 mb-2 list-disc"}>{children}</ul>
+        <ul className={className+" font-copy leading-relaxed text-lg mb-2 list-disc ml-4 list-outside"}>{children}</ul>
+      ),
+      li: ({ className, children }) =>(
+        <li className={className+" px-1"}>{children}</li>
       ),
       a: ({ href, children }) => (
         <CopyLink href={href}>{children}</CopyLink>
@@ -37,9 +40,7 @@ const Mdx = ({ code } : {code: string}) => {
       code: ({ className, children }) => (
         <code className={className+" font-copy bg-lightgrey px-1.5 py-1 rounded-md"}>{children}</code>
       ),
-      MultiCodeBlock: ({ className, children }) => (
-        <div className={className}>{children}</div>
-      ),
+      GameboyView: GameboyView,
       HalfImageWrapper: ({ children }) => (
         <div className="w-1/2 md:w-full">{children}</div>
       )
