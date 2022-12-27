@@ -8,9 +8,6 @@ import { createRequire } from "module"
 const require_ = createRequire(import.meta.url)
 import theme from "./theme.js"
 
-import rehypeFootnote from './rehypeFootnote';
-
-
 /** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields = {
   slug: {
@@ -61,10 +58,7 @@ export default makeSource({
       remarkMath,
       remarkGfm,
     ],
-    rehypePlugins: [
-      rehypeKatex,
-      rehypeFootnote
-    ]
+    rehypePlugins: [ rehypeKatex ]
   },
 })
 

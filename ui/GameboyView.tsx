@@ -8,8 +8,8 @@ export default function GameboyView({ gameSrc, children }: {gameSrc: string, chi
           className="h-80 w-80"
           src={gameSrc}
         />
-        <div className="">
-          <figcaption className="">{children}</figcaption>
+        <div className="mb-6">
+          <figcaption className="flex before:content-['.'] before:inline-block before:w-4 before:mr-3 before:bg-lightgrey">{children}</figcaption>
         </div>
       </figure>
     </div>

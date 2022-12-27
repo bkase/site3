@@ -23,10 +23,10 @@ const Mdx = ({ code } : {code: string}) => {
         <h3 className={className+" font-copy text-lg font-bold mb-2 py-2"}>{children}</h3>
       ),
       ol: ({ className, children }) =>(
-        <ol className={className+" font-copy leading-relaxed text-lg ml-6 mb-2 list-decimal list-outside"}>{children}</ol>
+        <ol className={className+" font-copy leading-relaxed text-lg ml-6 mb-4 list-decimal list-outside"}>{children}</ol>
       ),
       ul: ({ className, children }) =>(
-        <ul className={className+" font-copy leading-relaxed text-lg mb-2 list-disc ml-4 list-outside"}>{children}</ul>
+        <ul className={className+" font-copy leading-relaxed text-lg mb-4 list-disc ml-4 list-outside"}>{children}</ul>
       ),
       li: ({ className, children }) =>(
         <li className={className+" px-1"}>{children}</li>

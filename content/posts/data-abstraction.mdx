@@ -1,11 +1,11 @@
 ---
 title: "Data Abstraction: Theory And Practice"
-summary: One of the greatest tools to tame complexity in a growing codebase, growing either via lines of code or via people, is through strategic information hiding &mdash; you may know this as encapsulation, modularization, or data abstraction. In this post, we'll explore data abstraction's definition and capabilities from a formal perspective via type theory and show to what extent we can achieve the ideal through Swift, TypeScript, OCaml, ReasonML, Rust, and Haskell. Knowing how to use data abstraction in your language of choice is important in the short term, but understanding and naming the general concepts equips you to understand these tools as our languages evolve and change. We'll end with an explanation of how a more advanced usage of abstract data types shows up in the comonadic UI framework used in barbq.
+summary: Complexity in a growing codebase can be tamed through strategic information hiding -- you may know this as encapsulation, modularization, or data abstraction. Knowing how to use data abstraction is important in the short term, but understanding the general concepts equips you to understand these tools as our languages evolve and change.
 image: /static/posts/data-abstraction/title.png
 date: "2020-03-30"
 ---
 
-One of the greatest tools to tame complexity in a growing codebase, growing either via lines of code or via people, is through strategic information hiding &mdash; you may know this as encapsulation, modularization, or data abstraction. In this post, we'll explore data abstraction's definition and capabilities from a formal perspective and show to what extent we can achieve the ideal through Swift, TypeScript, OCaml, ReasonML, Rust, and Haskell. Knowing how to use data abstraction in your language of choice is important in the short term, but understanding and naming the general concepts equips you to understand these tools as our languages evolve and change. We'll end with an explanation of how a more advanced usage of abstract data types shows up in the comonadic UI framework used in [barbq](/posts/introducing-barbq).
+One of the greatest tools to tame complexity in a growing codebase, growing either via lines of code or via people, is through strategic information hiding &mdash; you may know this as encapsulation, modularization, or data abstraction. In this post, we'll explore data abstraction's definition and capabilities from a formal perspective and show to what extent we can achieve the ideal through Swift, TypeScript, OCaml, Rust, and Haskell. Knowing how to use data abstraction in your language of choice is important in the short term, but understanding and naming the general concepts equips you to understand these tools as our languages evolve and change. We'll end with an explanation of how a more advanced usage of abstract data types shows up in the comonadic UI framework used in [barbq](/posts/introducing-barbq).
 
 ## Background
 
@@ -19,9 +19,9 @@ Statically typed programming languages supply three kinds of syntactic forms ass
 
 ### Interface
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // interface, abstract type: A protocol
 protocol ExampleProtocol {
   static func create(_ s: String) -> Self
@@ -29,7 +29,7 @@ protocol ExampleProtocol {
 }
 ```
 
-```typescript
+```typescript TypeScript
 // interface, abstract type: An interface
 //
 // In TypeScript, we have to have separate interfaces for the static and
@@ -43,7 +43,7 @@ interface ExampleInterface {
 }
 ```
 
-```ocaml
+```ocaml OCaml
 (* interface, abstract type: A module type *)
 module type Example_intf = sig
   type t
@@ -53,7 +53,7 @@ module type Example_intf = sig
 end
 ```
 
-```rust
+```rust Rust
 // interface, abstract type: A trait
 trait ExampleTrait {
   fn create(s: &'static str) -> Self
@@ -61,26 +61,26 @@ trait ExampleTrait {
 }
 ```
 
-```haskell
+```haskell Haskell
 -- interface, abstract type: A typeclass
 class ExampleClass a where
   create :: String -> a
   read1 :: a -> String
 ```
 
-```fsharp
+```fsharp F#
 type ExampleInterface<'a> =
     abstract member create : string -> 'a
     abstract member read   : 'a -> string
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ### Implementation
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // implementation: A struct (or a class)
 public struct Example {
   let s: string
@@ -95,7 +95,7 @@ public struct Example {
 }
 ```
 
-```typescript
+```typescript TypeScript
 // implementation: A function (for static members)
 //                 A class (for instance ones)
 function createExample(ctor: ExampleConstructor, s: string): ExampleInterface {
@@ -111,7 +111,7 @@ class Example implements ExampleInterface {
 }
 ```
 
-```ocaml
+```ocaml OCaml
 (* implementation: A module *)
 module Example : Example_intf = struct
   type t = string
@@ -121,7 +121,7 @@ module Example : Example_intf = struct
 end
 ```
 
-```rust
+```rust Rust
 // implementation: A struct
 pub struct Example {
   s: &'static str
@@ -137,34 +137,34 @@ impl ExampleTrait for Example {
 }
 ```
 
-```haskell
+```haskell Haskell
 -- implementation: A typeclass instance
 instance ExampleClass String where
   create = id
   read1 = id
 ```
 
-```fsharp
+```fsharp F#
 type Example () =
     interface ExampleInterface<string> with
         member _.create s = s
         member _.read s = s
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ### Client
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 func client<E: ExampleInterface>() {
   let ex = E.create("hello");
   println(ex.read());
 }
 ```
 
-```typescript
+```typescript TypeScript
 // client
 // it's a bit hard to write down a generic function for this in TypeScript
 // because there are two separate interfaces
@@ -173,7 +173,7 @@ const ex = createExample(Example, "hello");
 console.log(ex.read())
 ```
 
-```ocaml
+```ocaml OCaml
 (* a client is a functor *)
 module Client(E: Example_intf) = struct
   let ex = E.create "hello" in
@@ -186,27 +186,27 @@ let client (module E: Example_intf) =
   printf "%s\n" (E.read ex)
 ```
 
-```rust
+```rust Rust
 fn client<E: Example>() {
   let ex = E::create();
   println!("{:}", ex.read());
 }
 ```
 
-```haskell
+```haskell Haskell
 client :: ExampleClass e => IO ()
 client = do
   let ex = create "hello"
   print $ read1 ex
 ```
 
-```fsharp
+```fsharp F#
 let E = Example () :> ExampleInterface<string>
 let ex = E.create "hello"
 E.read ex |> printf "%s\n"
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 The surface syntax differs among programming languages, but through them all, you can identify a _client_ interacting with an _implementation_ through an _interface_. The extent to which they achieve the ideal, from a semantics perspective, is something we will study in this post. Studying the ideal equips the student with the capacity for applying these techniques across all programming languages rather than relearning what is truly the same each time a new language is presented.
 
@@ -216,14 +216,10 @@ We can concisely communicate these laws through the use of interfaces that expre
 
 We can imagine a tower we can attempt to climb whenever working on some piece of new code:
 
-<Tower>
-
-1. Algebraic Structures
-2. Lawful Interfaces
-3. Interfaces
-4. Concrete Code
-
-</Tower>
+* Algebraic Structures
+* Lawful Interfaces
+* Interfaces
+* Concrete Code
 
 On the bottom, there is that which is is formed with the least effort, buckets of plain code. We can add more order through interfaces. Further refine it with laws. And finally, lighten the burden of needing to constantly revisit laws through the identification of algebraic structures.
 
@@ -239,40 +235,40 @@ To motivate the right way to think about abstract data types (interfaces), I wan
 
 Consider a function that takes in a list of arbitrary elements, $A$, and returns the length.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 func length<A>(es: [A]) -> Int {
   return es.count
 }
 ```
 
-```typescript
+```typescript TypeScript
 function length<A>(es: A[]) -> Int {
   return es.length
 }
 ```
 
-```ocaml
+```ocaml OCaml
 let length: 'a list -> int = fun es -> List.length es
 ```
 
-```rust
+```rust Rust
 fn length<A>(es: &Vec<A>) -> Int {
   es.len()
 }
 ```
 
-```haskell
+```haskell Haskell
 length :: List a -> Int
 length = L.length
 ```
 
-```fsharp
+```fsharp F#
 let length<'a> (es: 'a list): int = es.Length
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 When implementing the body of such parametrically polymorphic functions we're constrained to not rely on the type of $A$. In return, callers of our function have the liberty to choose any $A$ &mdash; in our case they can pass a list of `int`s a list of `string`s or a list of `frog`s. This is also known as _universal quantification_ of our type variable, $A$.
 
@@ -280,9 +276,9 @@ When defining such generic functions we're defining a family of functions: One f
 
 Consider an abstract data type representing an integer stack that is never empty. What we're describing is "some stacklike thing" that can push and pop integers.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // In real code, you'd probably want to use a struct with vars on the fields
 // but I want to keep these examples more or less a rosetta-stone of one-another
 public protocol StackProtocol {
@@ -322,7 +318,7 @@ extension SimpleStack : StackProtocol {
 }
 ```
 
-```typescript
+```typescript TypeScript
 interface StackConstructor {
   new (def: number): StackInterface
 }
@@ -360,7 +356,7 @@ class SimpleStack implements StackInterface {
 }
 ```
 
-```ocaml
+```ocaml OCaml
 module type Stack_intf = sig
   type t
 
@@ -382,7 +378,7 @@ module Stack : Stack_intf = struct
 end
 ```
 
-```rust
+```rust Rust
 // In real code, you'd probably want to use mutation here
 // but I want to keep these examples more or less a rosetta-stone of one-another
 trait StackTrait {
@@ -421,7 +417,7 @@ impl StackTrait for SimpleStack {
 }
 ```
 
-```haskell
+```haskell Haskell
 class StackClass a where
   create :: Int -> a
   push :: a -> Int -> a
@@ -437,7 +433,7 @@ instance StackClass Stack where
   pop (Stack (def, e::es)) = (e, Stack (def, es))
 ```
 
-```fsharp
+```fsharp F#
 type StackInterface<'a> =
     abstract member create : int -> 'a
     abstract member push   : 'a -> int -> 'a
@@ -453,7 +449,7 @@ type Stack () =
             | x::xs, def -> x, (xs, def)
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 When implementing our functions we have the liberty to rely on the concrete type. Essentially, the self is a parameter for some of these functions. The self passing is implicit in many languages, but, interestingly, very explicit in Rust. In contrast, users of our interface, callers of create, push, and pop, are constrained to not be able to rely on the concrete type of the stack.
 
@@ -478,9 +474,9 @@ Concretely for the stack example: a function that pops two ints off of our stack
 
 Recall that these idealized forms manifest themselves with a subset of their power in our programming languages as shown below:
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // interface, abstract type: A protocol *)
 protocol ExampleProtocol {
   static func create(_ s: String) -> Self
@@ -488,7 +484,7 @@ protocol ExampleProtocol {
 }
 ```
 
-```typescript
+```typescript TypeScript
 // interface, abstract type: An interface
 //
 // In TypeScript, we have to have separate interfaces for the static and
@@ -502,7 +498,7 @@ interface ExampleInterface {
 }
 ```
 
-```ocaml
+```ocaml OCaml
 (* interface, abstract type: A module type *)
 module type Example_intf = sig
   type t
@@ -512,7 +508,7 @@ module type Example_intf = sig
 end
 ```
 
-```rust
+```rust Rust
 // interface, abstract type: A trait
 trait ExampleTrait {
   fn create(s: &'static str) -> Self
@@ -520,24 +516,24 @@ trait ExampleTrait {
 }
 ```
 
-```haskell
+```haskell Haskell
 -- interface, abstract type: A typeclass
 class ExampleClass a where
   create :: String -> a
   read1 :: a -> String
 ```
 
-```fsharp
+```fsharp F#
 type ExampleInterface<'a> =
     abstract member create : string -> 'a
     abstract member read   : 'a -> string
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // implementation: A struct (or a class)
 public struct Example {
   let s: string
@@ -552,7 +548,7 @@ public struct Example {
 }
 ```
 
-```typescript
+```typescript TypeScript
 // implementation: A function (for static members)
 //                 A class (for instance ones)
 function createExample(ctor: ExampleConstructor, s: string): ExampleInterface {
@@ -568,7 +564,7 @@ class Example implements ExampleInterface {
 }
 ```
 
-```ocaml
+```ocaml OCaml
 (* implementation: A module *)
 module Example : Example_intf = struct
   type t = string
@@ -578,7 +574,7 @@ module Example : Example_intf = struct
 end
 ```
 
-```rust
+```rust Rust
 // implementation: A struct
 pub struct Example {
   s: &'static str
@@ -594,70 +590,70 @@ impl ExampleTrait for Example {
 }
 ```
 
-```haskell
+```haskell Haskell
 -- implementation: A typeclass instance
 instance ExampleClass String where
   create = id
   read1 = id
 ```
 
-```fsharp
+```fsharp F#
 type Example () =
     interface ExampleInterface<string> with
         member _.create s = s
         member _.read s = s
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // client
 // ...
 let ex = Example.create("hello");
 println(ex.read());
 ```
 
-```typescript
+```typescript TypeScript
 // client
 // ...
 const ex = createExample(Example, "hello");
 console.log(ex.read())
 ```
 
-```ocaml
+```ocaml OCaml
 (* client *)
 (* ... *)
 let ex = Example.create "hello" in
 printf "%s\n" (Example.read ex)
 ```
 
-```rust
+```rust Rust
 // client
 // ...
 let ex = Example::create();
 println!("{:}", ex.read());
 ```
 
-```haskell
+```haskell Haskell
 -- ...  do
   let ex = create "hello"
   print $ read1 ex
 ```
 
-```fsharp
+```fsharp F#
 let E = Example () :> ExampleInterface<string>
 let ex = E.create "hello"
 E.read ex |> printf "%s\n"
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ## Properties of Abstract Data Types
 
 In this section, we'll enumerate a few interesting properties of abstract data
-types first in their idealized forms and then in our mainstream languages. If you only want to see languages that can properly express all of these properties, skip to the OCaml or ReasonML versions of these code samples.
+types first in their idealized forms and then in our mainstream languages. If you only want to see languages that can properly express all of these properties, skip to the OCaml version of these code samples.
 
 ### Implementations as values
 
@@ -665,9 +661,9 @@ In an ideal world, a packed implementation is a value. It is first-class. We can
 
 Note: The seeming lack[^7] of power of Haskell is just due to this section occurring before I explain Rank2 types.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // In Swift, implementations are not first-class. We can't create them
 // anonymously. However, we can accept them as arguments and return them from
 // functions with some caveats.
@@ -699,7 +695,7 @@ func acceptTau2<Packed: Tau>(p: Packed) {
 }
 ```
 
-```typescript
+```typescript TypeScript
 // In TypeScript, implementations are not first-class. We can't create them
 // anonymously. However, we can accept them as arguments and return them from
 // functions. In TypeScript, the static and instance side of a class have
@@ -718,8 +714,8 @@ function acceptTau(t: Tau): string {
 }
 ```
 
-```ocaml
-(* OCaml and ReasonML are the only languages that can properly express first
+```ocaml OCaml
+(* OCaml is the only languages that can properly express first
  * class implementations anonymously. We do so via the first-class module
  * approach. *)
 
@@ -742,7 +738,7 @@ let make_tau =
 let accept_tau (module T: Tau) (t: T.t) = T.name t
 ```
 
-```rust
+```rust Rust
 // In Rust, implementations are not first-class. We can't create them
 // anonymously. However, we can accept them as arguments and return them from
 // functions with some caveats.
@@ -772,7 +768,7 @@ func acceptTau2<Packed: Tau>(p: Packed) -> &'static str {
 }
 ```
 
-```haskell
+```haskell Haskell
 -- In Haskell, with the type-class treatment, implementations are not
 -- first-class. We can't create them anonymously. We can neither accept them
 -- as arguments nor return them from functions unless we explicitly open our
@@ -792,7 +788,7 @@ acceptTau :: Tau t => t -> String
 acceptTau t = name t
 ```
 
-```fsharp
+```fsharp F#
 (* In F#, implementations are not first class *)
 
 (* interfaces are explicitly declared *)
@@ -803,13 +799,13 @@ type Tau<'a> =
 let acceptTau<'a>(tau: Tau<'a>) = tau.name
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 This property provides many interesting capabilities that we won't enumerate in full. Here's just one: Coupled with the rule restricting the existentially quantified $t$ from appearing in the result of client functions, we can use the first-classed-ness to allow for the unification of disparate concrete types in branches as long as they pack to the same interface. Our machines use dynamic dispatch to make this work at runtime.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // If the protocol doesn't use associated types or Self, we can unify instances
 // in this manner. But not the abstract data types themselves
 func myPet(preference: Preference) -> Animal {
@@ -835,7 +831,7 @@ func badMyPet<A: Animal>(preference: Preference) -> A {
 }
 ```
 
-```typescript
+```typescript TypeScript
 // We can do this typescript if we only consider the instance side interface
 function myPet(preference: Preference): Animal {
   // assuming dog and cat are available in scope
@@ -847,8 +843,8 @@ function myPet(preference: Preference): Animal {
 }
 ```
 
-```ocaml
-(* We can do this in OCaml and ReasonML using first-class modules *)
+```ocaml OCaml
+(* We can do this in OCaml using first-class modules *)
 let my_pet : Preference.t -> (module Animal_intf) = function
   | Active -> (module Dog : Animal_intf)
   | Passive -> (module Cat : Animal_intf)
@@ -857,7 +853,7 @@ let my_pet : Preference.t -> (module Animal_intf) = function
  * article). For the curious, one way to do so is using GADTs *)
 ```
 
-```rust
+```rust Rust
 // If the trait only has instance functions on it we can unify instances
 // in this manner. But trying this with a trait that contains functions missing
 // self, will meet you with a compile error.
@@ -869,13 +865,13 @@ fn myPet(preference: Preference) -> Box<dyn Animal> {
 }
 ```
 
-```haskell
+```haskell Haskell
 -- We can do this in Haskell, but we'll need to use tools on top of Rank2 types
 -- which will be explained later. For the curious, you can achieve this with
 -- GADTs
 ```
 
-```fsharp
+```fsharp F#
 type Animal = interface end
 
 type Dog () =
@@ -896,7 +892,7 @@ let myPet (preference: Preference): Animal =
     | Passive -> Cat () :> Animal
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ### Upcasting
 
@@ -907,9 +903,9 @@ For example, consider if we modelled a sort of iterator: $\exists t.\langle next
 $\uparrow_{\tau_{stack}, \tau_{iterator}} = \forall t. \lambda s : \langle \dots, pop : t \rightarrow (int \times t) \rangle.$ <br/>
 $\quad \bigcup t; \langle next = s.pop \rangle ; \langle next : t \rightarrow (int \times t) \rangle$
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // Swift does not support upcasting directly
 protocol Iterator {
   func next() -> (Int, Self)
@@ -958,7 +954,7 @@ func upcastStackIterator<S: StackProtocol, I: Iterator>(s: S) -> I where I.Conta
 }
 ```
 
-```typescript
+```typescript TypeScript
 // TypeScript does not support upcasting directly with the class-based model
 //
 // I imagine you could achieve something like this if you use JavaScript objects
@@ -991,8 +987,8 @@ function upcast_stack_iterator<S extends StackInterface>(s: S): Iterator1 {
 // Yes, this actually compiles on Try TypeScript.
 ```
 
-```ocaml
-(* OCaml's and ReasonML's first-class modules let us upcast without needing to
+```ocaml OCaml
+(* OCaml's first-class modules let us upcast without needing to
  * muck with any extra named data types *)
 
 module type Iterator_intf = sig
@@ -1009,7 +1005,7 @@ let upcast_stack_iterator (module Stack : Stack_intf) : (module Iterator_intf) =
   repack
 ```
 
-```rust
+```rust Rust
 // Rust does not support upcasting directly
 pub trait Iterator {
   next(&self): (u32, Self)
@@ -1056,12 +1052,12 @@ fn upcastStackIterator<S: StackProtocol, I: Iterator>(s: S) -> I where I.Contain
 }
 ```
 
-```haskell
+```haskell Haskell
 -- We cannot upcast directly with the typeclass-model, but we can using GADTs
 -- which is omitted here
 ```
 
-```fsharp
+```fsharp F#
 (* We can upcast with a function if we introduce the intermediate type *)
 
 type IteratorInterface<'a> =
@@ -1075,7 +1071,7 @@ let upcast_stack_iterator (stack: StackInterface<'a>) : IteratorInterface<'a> =
     StackIterator stack :> IteratorInterface<'a>
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ### Extension
 
@@ -1086,9 +1082,9 @@ For example, consider if we wanted to expose a `peek` operation. Since this is d
 $\bigstar_{\tau_{-}, \tau_{+}} = \forall t. \lambda s : \langle \dots \rangle.$ <br/>
 $\quad \bigcup t; \langle \dots, peek = snd(pop \; t) \rangle ; \langle \dots, peek : t \rightarrow int \rangle$
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // Extension in Swift can be achieved with extensions on protocols
 extension StackProtocol {
   func peek() -> Self {
@@ -1098,7 +1094,7 @@ extension StackProtocol {
 }
 ```
 
-```typescript
+```typescript TypeScript
 // Extension in TypeScript is not possible directly as you cannot give default
 // functions to interfaces.
 
@@ -1113,7 +1109,7 @@ class PeekingStack<S: StackInterface>(s: S): StackInterface {
 }
 ```
 
-```ocaml
+```ocaml OCaml
 (* Extension can be achieved with functors *)
 module PeekingStack(S: Stack_intf) = struct
   (* everything in S *)
@@ -1124,7 +1120,7 @@ module PeekingStack(S: Stack_intf) = struct
 end
 ```
 
-```rust
+```rust Rust
 // Extension in Rust can be achieved with trait impls
 impl StackTrait {
   fn peek(&self) -> Self {
@@ -1134,14 +1130,14 @@ impl StackTrait {
 }
 ```
 
-```haskell
+```haskell Haskell
 -- Extension in haskell can be achieved with default methods in an extension
 -- typeclasses
 class StackClass s => PeekingStack s where
   peek s = snd (pop s)
 ```
 
-```fsharp
+```fsharp F#
 (* Extension can be achieved by adding a member *)
 type PeekingStack<'a> (stack: StackInterface<'a>) =
     interface StackInterface<'a> with
@@ -1152,7 +1148,7 @@ type PeekingStack<'a> (stack: StackInterface<'a>) =
     member _.peek s = snd (stack.pop s)
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ### Interface composition
 
@@ -1162,9 +1158,9 @@ Given two packed implementations we can combine them to this composed interface:
 
 $p_1 \circ p_2 : (\exists s.\tau_1) \rightarrow (\exists t.\tau_2) \rightarrow \exists s.\exists t.(\tau_1 \& \tau_2) = \forall s. \lambda p_1. \forall t. \lambda p_2.$ <br /> $\quad \bigcup s; (\bigcup t; \tau_1 \& \tau_2; \exists t.(\tau_1 \& \tau_2));$ <br /> $\quad \exists s.\exists t.(\tau_1 \& \tau_2)$
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // Interface composition (via protocols) is done using multiple inheritance on
 // protocols or the & operator
 //
@@ -1190,7 +1186,7 @@ extension Stack: Pop { /* ... */ }
 extension Stack: PushPop { }
 ```
 
-```typescript
+```typescript TypeScript
 // TypeScript is similar to Swift and Rust, but alternatively, we can again use
 // the interface as records approach and compose more naturally
 
@@ -1198,7 +1194,7 @@ extension Stack: PushPop { }
 // implement this one
 ```
 
-```ocaml
+```ocaml OCaml
 (* We can combine packed interfaces by including modules, and we can even define
  * compose as a function using first-class modules
  *
@@ -1230,7 +1226,7 @@ let packed : (module PushPop_intf) =
    end) in packed
 ```
 
-```rust
+```rust Rust
 // We can compose interfaces, the traits, with the + operator, and then compose
 // packed interfaces by adding conformance for a trait that is constrained to be
 // that composition with a wrapper type that combines the implementations (if
@@ -1254,7 +1250,7 @@ impl Pop for SimpleStack { /* ... */ }
 impl PushPop for SimpleStack { }
 ```
 
-```haskell
+```haskell Haskell
 -- Interface composition (via constraint composition) is definable in userland
 -- Haskell as long as you turn on the right extension knobs.
 --
@@ -1265,7 +1261,7 @@ impl PushPop for SimpleStack { }
 -- two typeclasses. Please open a PR to show me if it's true!
 ```
 
-```fsharp
+```fsharp F#
 (* We can combine packed interfaces with first-class interfaces.
  *
  * We can also compose interfaces by inheriting abstract members. *)
@@ -1287,15 +1283,15 @@ type ComposedPushPop (pushAndPop: Push * Pop) =
         member _.pop x = pop.pop x
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 ## Existential Types As Rank2 Universal Types
 
 It is surprisingly possible to represent the existential abstract data types entirely using $\forall$s in programming languages where rank2 types are expressible. Rank2 types are polymorphic types where the $\forall$ quantifier can appear parenthesized to the left of a $\rightarrow$, or equivalently, to the right of a data type declaration.
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 // Swift doesn't support Rank2 types
 //
 // For my Swift implementation of Comonadic UI, I needed to hack around Swift's
@@ -1305,12 +1301,12 @@ It is surprisingly possible to represent the existential abstract data types ent
 // See https://github.com/bow-swift/bow/pull/470/files#diff-cc655fa2944d79be4fc27fbeb114082bR25 for an example of this.
 ```
 
-```typescript
+```typescript TypeScript
 // TypeScript doesn't support Rank2 types
 ```
 
-```ocaml
-(* OCaml and ReasonML support Rank2 types, but only if they are located inside
+```ocaml OCaml
+(* OCaml supports Rank2 types, but only if they are located inside
  * of data types either inside a record or a GADT *)
 
 (* The user of rank2record picks the 'a *)
@@ -1321,11 +1317,11 @@ type rank2gadt =
   | Foo : 'a -> rank2gadt
 ```
 
-```rust
+```rust Rust
 // Rust doesn't support Rank2 types
 ```
 
-```haskell
+```haskell Haskell
 -- Haskell support Rank2 types if you enable the Rank2Types or RankNTypes
 -- extension
 
@@ -1337,13 +1333,13 @@ rank2sample f x y = f x y
 newtype Foo = Foo (forall b. b -> b -> b)
 ```
 
-```fsharp
+```fsharp F#
 (* F# only supports Rank2 types via anonymously implementing an interface. See
  * https://stackoverflow.com/questions/7213599/generic-higher-order-function/7221589#7221589
  *)
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 Now for the intuition as to why data abstraction's existential interface, the packed implementation, and client are all definable using just the universal $\forall$:
 
@@ -1361,32 +1357,32 @@ The two types are a `UI` at this moment, and a `Component` modeling UI changing 
 
 Recall a reducer as described in an [earlier post](/posts/reducers-are-monoids).
 
-<MultiCodeBlock>
+<CH.Code>
 
-```swift
+```swift Swift
 typealias Reducer<S,A> = Func<A, Endo<S>>
 ```
 
-```typescript
+```typescript TypeScript
 type Reducer<S, A> = Func<A, Endo<S>>
 ```
 
-```ocaml
+```ocaml OCaml
 (* module StateEndo = ... *)
 module Reducer = struct
   type 'a t = 'action -> StateEndo.t
 end
 ```
 
-```haskell
+```haskell Haskell
 type Reducer s a = a -> Endo s
 ```
 
-```fsharp
+```fsharp F#
 type reducer<'state, 'action> = 'action -> Endo<'state>
 ```
 
-</MultiCodeBlock>
+</CH.Code>
 
 Now, the rank2 `UI` type:
 
