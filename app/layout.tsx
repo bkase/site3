@@ -23,6 +23,8 @@ const newsCycle = News_Cycle({
 });
 
 import "@code-hike/mdx/dist/index.css"
+import "@/styles/ch-overrides.css"
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
