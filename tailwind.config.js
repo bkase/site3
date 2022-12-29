@@ -14,7 +14,7 @@ module.exports = {
       },
       colors: {
         navy: '#01043E',
-        whiteyellow: '#fffee8', // inverse navy
+        whiteyellow: '#fbf1c7',
         black: '#000219',
         green: '#1B998B',
         orange: '#FC9E4F',

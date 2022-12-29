@@ -14,19 +14,19 @@ const Mdx = ({ code } : {code: string}) => {
   return (
     <Component components={{
       p: ({ className, children }) => (
-        <p className={className+" font-copy leading-relaxed text-lg mb-4"}>{children}</p>
+        <p className={className+" font-copy leading-relaxed md:leading-loose text-lg md:text-xl mb-4 md:mb-8"}>{children}</p>
       ),
       h2: ({ className, children }) => (
-        <h2 className={className+" font-copy text-3xl mb-4 py-2"}>{children}</h2>
+        <h2 className={className+" font-copy text-3xl md:text-4xl mb-4 md:mb-8 py-2"}>{children}</h2>
       ),
       h3: ({ className, children }) => (
-        <h3 className={className+" font-copy text-lg font-bold mb-2 py-2"}>{children}</h3>
+        <h3 className={className+" font-copy text-lg md:text-xl font-bold mb-2 md:mb-4 py-2"}>{children}</h3>
       ),
       ol: ({ className, children }) =>(
-        <ol className={className+" font-copy leading-relaxed text-lg ml-6 mb-4 list-decimal list-outside"}>{children}</ol>
+        <ol className={className+" font-copy leading-relaxed md:leading-loose text-lg md:text-xl ml-6 mb-4 md:mb-8 list-decimal list-outside"}>{children}</ol>
       ),
       ul: ({ className, children }) =>(
-        <ul className={className+" font-copy leading-relaxed text-lg mb-4 list-disc ml-4 list-outside"}>{children}</ul>
+        <ul className={className+" font-copy leading-relaxed md:leading-loose text-lg md:text-xl mb-4 md:mb-8 list-disc ml-4 list-outside"}>{children}</ul>
       ),
       li: ({ className, children }) =>(
         <li className={className+" px-1"}>{children}</li>

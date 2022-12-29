@@ -50,8 +50,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="twitter:image" content="https://bkase.io/brandon-jacket.jpeg" />
 
       </head>
-      <body className={`${pragmataPro.variable} ${newsCycle.variable} font-friendly`}>
-        <div className="container mx-auto px-4">
+      <body className={`${pragmataPro.variable} ${newsCycle.variable} font-friendly md:px-8 lg:px-12`}>
+        <div className="container mx-auto px-4 max-w-5xl">
           <div className="">
             <AboutMe />
           </div>
