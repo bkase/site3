@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="bkase.io" />
         <meta property="twitter:url" content="https://bkase.io" />
-        <meta name="twitter:title" content="bkase.dev" />
+        <meta name="twitter:title" content="bkase.io" />
         <meta name="twitter:description" content="Musings of Brandon Kase" />
         <meta name="twitter:image" content="https://bkase.io/brandon-jacket.jpeg" />
 

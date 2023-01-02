@@ -29,7 +29,7 @@ export default function MdxHead({ params }: MdxHeadProps) {
       <meta name="twitter:card" content="summary_large_image" />
       <meta property="twitter:domain" content="bkase.io" />
       <meta property="twitter:url" content="https://bkase.io" />
-      <meta name="twitter:title" content="bkase.dev" />
+      <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={mdxPost.summary} />
       <meta name="twitter:image" content={"https://bkase.io/" + mdxPost.image} />
     </>
