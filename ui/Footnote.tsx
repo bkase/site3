@@ -38,7 +38,7 @@ export default function Footnote({ children, alt }: { children: React.ReactNode,
     <>
       {show ?
         <span
-          className="w-2/3 px-2 md:px-4 lg:px-6 z-10"
+          className="w-2/3 px-2 md:px-4 lg:px-6 z-20"
           ref={floating}
           style={{
             position: strategy,

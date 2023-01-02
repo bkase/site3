@@ -5,11 +5,11 @@ image: /static/posts/data-abstraction-dhall/title.png
 date: "2020-04-30"
 ---
 
-System-F[^1], the core theory that underlies the idealized data abstraction that I described in [Data Abstraction: Theory and Practice](/posts/data-abstraction), also underlies [Dhall](https://dhall-lang.org/), a programmable configuration language. Thus, it's pretty straightforward to translate it into executable Dhall code. This post serves three purposes: (1) Dhall coders can use techniques shown here to tame complexity through data abstraction. (2) Scholars seeking to understand idealized data abstraction can use this executable description as the further exposition of the concepts introduced in the first post. (3) I, Brandon, can use this prose to express my excitement over some very cool code.
+<Footnote alt={<Katex>System-F is a typed lambda calculus with scoped universal quantification. In other words, we can mix $\forall$s with our $\lambda$s.</Katex>}>System-F</Footnote>, the core theory that underlies the idealized data abstraction that I described in [Data Abstraction: Theory and Practice](/posts/data-abstraction), also underlies [Dhall](https://dhall-lang.org/), a programmable configuration language. Thus, it's pretty straightforward to translate it into executable Dhall code. This post serves three purposes: (1) Dhall coders can use techniques shown here to tame complexity through data abstraction. (2) Scholars seeking to understand idealized data abstraction can use this executable description as the further exposition of the concepts introduced in the first post. (3) I, Brandon, can use this prose to express my excitement over some very cool code.
 
 ## Background
 
-"Dhall is a programmable configuration language that you can think of as: JSON + functions + types + imports"[^2]. For the functional programming enthusiasts, you can think of it as literally "System-Fω[^3] with records" and a little syntactic sugar on top. In other words, it's a well-designed programming language to replace the mess that is templated YAML or JSON. Dhall compiles into YAML or JSON (and Nix and Bash and a few other things) in the same way are existing template expanders compile templated YAML into YAML.
+<Footnote alt={<Katex>Quote from the Dhall website</Katex>}>"Dhall is a programmable configuration language that you can think of as: JSON + functions + types + imports"</Footnote>. For the functional programming enthusiasts, you can think of it as literally "<Footnote alt={<Katex>System-Fω adds dependent typing to System-F.</Katex>}>System-Fω</Footnote> with records" and a little syntactic sugar on top. In other words, it's a well-designed programming language to replace the mess that is templated YAML or JSON. Dhall compiles into YAML or JSON (and Nix and Bash and a few other things) in the same way are existing template expanders compile templated YAML into YAML.
 
 Since idealized data abstraction using the "Existential Types As Rank2 Universal Types" interpretation [as described in my last post](/posts/data-abstraction) is implementable in pure System-F, I realized it would be pretty easy to translate it to Dhall.
 
@@ -195,6 +195,3 @@ Implementations as values, upcasting, extension, and interface composition are a
 
 Since System-F powers both idealized data abstraction and Dhall, we can describe these primitives directly in Dhall. Regardless of whether you've used this post to learn a new capability of Dhall, to further study information hiding and encapsulation, or to indulge my insatiable need to share in that which I am interested, feel free to send me a tweet with any feedback, corrections, or comments to [@bkase_](https://twitter.com/bkase_).
 
-[^1]: System-F is a typed lambda calculus with scoped universal quantification. In other words, we can mix $\forall$s with our $\lambda$s.
-[^2]: Quote from the Dhall website
-[^3]: System-Fω adds dependent typing to System-F.

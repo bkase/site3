@@ -9,9 +9,9 @@ One of the greatest tools to tame complexity in a growing codebase, growing eith
 
 ## Background
 
-Our brains prefer to compartmentalize and draw black boxes around modules while stitching together pieces of code. When designing or changing these pieces we can additionally create interfaces, traits, protocols, signatures, typeclasses (we'll use "interface" for the rest of this article) that hide implementation details and make these black boxes explicit. Moreover, we can use these interfaces as contracts between implementor and client to allow for easy concurrency in our code composition; the less we need to keep in our heads for each part of our system, the more parts of our system we can context switch between and can collaborate on with colleagues.[^1] These contracts also reduce that which implementors need to provide to clients to a minimum as that which can be derived others can attach by enriching or extending the given interfaces.
+Our brains prefer to compartmentalize and draw black boxes around modules while stitching together pieces of code. When designing or changing these pieces we can additionally create interfaces, traits, protocols, signatures, typeclasses (we'll use "interface" for the rest of this article) that hide implementation details and make these black boxes explicit. Moreover, <Footnote alt={<span>I squeezed a lot into this metaphor. Think of people on a team as threads. Even in a single-threaded system, concurrency is useful, when working with slow IO for example, and with the right tools, it is manageable. The prudent use of interfaces makes it easier to work with other people or switch between code even on a solo project.</span>}>we can use these interfaces as contracts between implementor and client to allow for easy concurrency in our code composition; the less we need to keep in our heads for each part of our system, the more parts of our system we can context switch between and can collaborate on with colleagues.</Footnote> These contracts also reduce that which implementors need to provide to clients to a minimum as that which can be derived others can attach by enriching or extending the given interfaces.
 
-A perspective on data abstraction that we will not be exploring is that from the Object-Oriented school. We will only explore a type-theoretic perspective. The best way to enforce conventions is for them to be compile errors. The best way to formalize something is by connecting it to formal logic. This is not to say that there is nothing to learn from the OO-perspective, but it is this author's view that the logical perspective is more logical.[^2]
+A perspective on data abstraction that we will not be exploring is that from the Object-Oriented school. We will only explore a type-theoretic perspective. The best way to enforce conventions is for them to be compile errors. The best way to formalize something is by connecting it to formal logic. This is not to say that there is nothing to learn from the OO-perspective, but it is this author's view that the <Footnote alt={<span>Pun intended.</span>}>logical perspective is more logical</Footnote>.
 
 ## Statically-Typed Data Abstraction
 
@@ -272,7 +272,7 @@ let length<'a> (es: 'a list): int = es.Length
 
 When implementing the body of such parametrically polymorphic functions we're constrained to not rely on the type of $A$. In return, callers of our function have the liberty to choose any $A$ &mdash; in our case they can pass a list of `int`s a list of `string`s or a list of `frog`s. This is also known as _universal quantification_ of our type variable, $A$.
 
-When defining such generic functions we're defining a family of functions: One for each choice of concrete type. This family is, in a sense, an infinite product[^2] of all such functions.
+When defining such generic functions we're defining a family of functions: One for each choice of concrete type. This family is, in a sense, an <Footnote alt={<Katex>Otherwise known as a tuple. The number of inhabitants of a product of $N$ types is the product of the number of inhabitants of each of the $N$ types themselves. $Bool \times Bool$ has $4$ inhabitants because $Bool$ has two, `True` and `False`, and $2 \times 2 = 4$.</Katex>}>infinite product</Footnote> of all such functions.
 
 Consider an abstract data type representing an integer stack that is never empty. What we're describing is "some stacklike thing" that can push and pop integers.
 
@@ -457,7 +457,7 @@ When defining such abstract data types in a sense we're defining a family of con
 
 In this way, parametric polymorphism is dual to data abstraction.
 
-Through the Curry-Howard isomorphism[^4] a generic $A$ in our types correspond to $\forall A$ in logic. In other words, a universally quantified type variable in type theory is isomorphic to a universally quantified propositional variable in logic. The dual of $\forall$ is $\exists$ or "there exists." Now we can go backward through Curry-Howard and land on the irrefutable conclusion that _abstract types are existential types_. There exists some concrete stack, where the implementor knows the underlying concrete representation, but as the client, we don't know the details. We _existentially quantify_ over the type of the concrete representation.
+Through the <Footnote alt={<span>The Curry-Howard isomorphism allows us to teleport types in our programming languages back and forth with theorems in logic; values with proofs. This is a very fascinating property of our universe and I encourage you to explore it! But that is not what this post is about. To learn more see the <CopyLink href="https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence">wikipedia page</CopyLink> on the subject.</span>}>Curry-Howard isomorphism</Footnote> a generic $A$ in our types correspond to $\forall A$ in logic. In other words, a universally quantified type variable in type theory is isomorphic to a universally quantified propositional variable in logic. The dual of $\forall$ is $\exists$ or "there exists." Now we can go backward through Curry-Howard and land on the irrefutable conclusion that _abstract types are existential types_. There exists some concrete stack, where the implementor knows the underlying concrete representation, but as the client, we don't know the details. We _existentially quantify_ over the type of the concrete representation.
 
 ### Interface
 
@@ -465,11 +465,11 @@ Our idealized form of data abstraction will refer to abstract data types as $\ex
 
 ### Implementation
 
-We can pack a chosen representation type, $\rho$, along with an implementation $e$ replacing $\rho$ for $t$ in our existential box to create an abstract data type (or introducing a new variant to our infinite sum) $\bigcup \rho; e; \exists t.\tau$[^5]. Concretely for the stack example we can choose $\rho$ to be the default int and a list storing the values pushed so far: $\bigcup (Int * List[Int]) ; \langle create = \dots, push = \dots, pop = \dots \rangle ; \exists t. \langle create : unit \rightarrow t, push: t \rightarrow int \rightarrow t, pop: t \rightarrow (int \times t) \rangle$
+<Footnote alt={<span>For typesetting purposes, I chose a union symbol since packing an implementation is like a variant constructor for the infinite sum that the interface represents. In other literature, you may see this represented with the operator "pack".</span>}>We can pack a chosen representation type, $\rho$, along with an implementation $e$ replacing $\rho$ for $t$ in our existential box to create an abstract data type (or introducing a new variant to our infinite sum) $\bigcup \rho; e; \exists t.\tau$</Footnote>. Concretely for the stack example we can choose $\rho$ to be the default int and a list storing the values pushed so far: $\bigcup (Int * List[Int]) ; \langle create = \dots, push = \dots, pop = \dots \rangle ; \exists t. \langle create : unit \rightarrow t, push: t \rightarrow int \rightarrow t, pop: t \rightarrow (int \times t) \rangle$
 
 ### Client
 
-A client is an expression that opens a packed value for use under an environment where the choice of the existential $t$ is opaque. The client must be able to run _for all_ specific implementations. Due to these requirements, it's best to think of a client as a function[^6] of type $\forall t. \tau \rightarrow \tau_2$. Note, we add a further restriction that $t$ cannot show up in the return type $\tau_2$. We'll show below how this restriction increases the power of our abstract data type.
+A client is an expression that opens a packed value for use under an environment where the choice of the existential $t$ is opaque. The client must be able to run _for all_ specific implementations. Due to these requirements, <Footnote alt={<span>In order to simplify the presentation (and further explanations below), I chose to think about clients as they're expressed in System-F. Typically, in other literature, you will see this represented as "open" or "abstype".</span>}>it's best to think of a client as a function</Footnote> of type $\forall t. \tau \rightarrow \tau_2$. Note, we add a further restriction that $t$ cannot show up in the return type $\tau_2$. We'll show below how this restriction increases the power of our abstract data type.
 Concretely for the stack example: a function that pops two ints off of our stack and returns their sum would have type $\forall t. \langle create : unit \rightarrow t, push: t \rightarrow int \rightarrow t, pop: t \rightarrow (int \times t) \rangle \rightarrow int$
 
 Recall that these idealized forms manifest themselves with a subset of their power in our programming languages as shown below:
@@ -659,7 +659,7 @@ types first in their idealized forms and then in our mainstream languages. If yo
 
 In an ideal world, a packed implementation is a value. It is first-class. We can create it in an expression anonymously, we can accept it as an argument to a function, and we can return it from a function as well. $\bigcup \rho; e; \exists t.\tau$ can appear anywhere any other expression can appear.
 
-Note: The seeming lack[^7] of power of Haskell is just due to this section occurring before I explain Rank2 types.
+Note: The <Footnote alt={<span>I'm sure there's some obscure extension that can support first-class packed implementations, but I needed a transition to the material later, so please let me tease it here.</span>}>seeming lack</Footnote> of power of Haskell is just due to this section occurring before I explain Rank2 types.
 
 <CH.Code>
 
@@ -1347,11 +1347,11 @@ Recall that a client is a function that is polymorphic over the choice of concre
 
 Let us consider our abstract data type, the packed implementation, as a process instead of an object. It's a machine that can take a client that acts on arbitrary implementations and return something (be it an `Int`, a `String`, a `Frog` &mdash; let's call it $u$). This machine runs the client on the implementation's representation type and just returns that result.
 
-We can translate that explanation into a type $\forall u. (\forall t.\tau \rightarrow u) \rightarrow u$. Restated: An abstract data type is a function that takes a client and runs it on some underlying implementation of $\tau$ with some concrete choice for $t$. The caller of this machine picks $u$ and the machine (the packed implementation) picks the $t$ as it's exactly the hidden representation type of the implementation; thus explaining why the caller needs to pass a client that can run $\forall t$. In this formulation, it is relatively straightforward to define precise implementations for the packed _implementation_ and _client_ objects.[^8]
+We can translate that explanation into a type $\forall u. (\forall t.\tau \rightarrow u) \rightarrow u$. Restated: An abstract data type is a function that takes a client and runs it on some underlying implementation of $\tau$ with some concrete choice for $t$. The caller of this machine picks $u$ and the machine (the packed implementation) picks the $t$ as it's exactly the hidden representation type of the implementation; thus explaining why the caller needs to pass a client that can run $\forall t$. In this formulation, it is <Footnote alt={<span>See Practical Foundations of Programming Languages (PFPL) by Bob Harper on page 155</span>}>relatively straightforward to define precise implementations for the packed _implementation_ and _client_ objects</Footnote>.
 
 ## Rank2 Types for Simpler Mutually Recursive Types
 
-In the Comonadic UI, there are two types that are effectively mutually recursive, but use a rank2 type, effectively an existensial type, to lower complexity during framework usage.[^9]
+In the Comonadic UI, there are two types that are effectively mutually recursive, but use a rank2 type, effectively an existensial type, to <Footnote alt={<span>I am pretty sure I learned this trick by reading through one of <CopyLink href="https://twitter.com/paf31">Phil Freeman</CopyLink>'s original implementations of Comonadic UI, but I am unable to find the source.</span>}>lower complexity during framework usage</Footnote>.
 
 The two types are a `UI` at this moment, and a `Component` modeling UI changing over time. I'll share a simplified version of these types now.
 
@@ -1417,14 +1417,4 @@ Thank you [Chris Eidhof](https://twitter.com/chriseidhof) and [Daira Hopwood](ht
 ### Sources
 
 I heavily relied on Mitchell and Plotkin's "Abstract Types Have Existential Type" and Chapter 17 of Practical Foundations of Programming Languages (PFPL) by Bob Harper, and, of course, Wikipedia when writing this post. "Abstract Types Have Existential Type" more thoroughly talks through the different forms of composition and power abstract types have and PFPL introduces the existential, pack, and open syntactic forms, shows typing rules and provides one take on the representability with rank-2 types. I intended to repackage these pieces of information in a simplified manner and reflecting on how this theory manifests within mainstream programming languages. If you want to learn more, I recommend reviewing these sources.
-
-[^1]: I squeezed a lot into this metaphor. Think of people on a team as threads. Even in a single-threaded system, concurrency is useful, when working with slow IO for example, and with the right tools, it is manageable. The prudent use of interfaces makes it easier to work with other people or switch between code even on a solo project.
-[^2]: Pun intended.
-[^3]: Otherwise known as a tuple. The number of inhabitants of a product of $N$ types is the product of the number of inhabitants of each of the $N$ types themselves. $Bool \times Bool$ has $4$ inhabitants because $Bool$ has two, `True` and `False`, and $2 \times 2 = 4$.
-[^4]: The Curry-Howard isomorphism allows us to teleport types in our programming languages back and forth with theorems in logic; values with proofs. This is a very fascinating property of our universe and I encourage you to explore it! But that is not what this post is about. To learn more see the [wikipedia page](https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence) on the subject.
-[^5]: For typesetting purposes, I chose a union symbol since packing an implementation is like a variant constructor for the infinite sum that the interface represents. In other literature, you may see this represented with the operator "pack".
-[^6]: In order to simplify the presentation (and further explanations below), I chose to think about clients as they're expressed in System-F. Typically, in other literature, you will see this represented as "open" or "abstype".
-[^7]: I'm sure there's some obscure extension that can support first-class packed implementations, but I needed a transition to the material later, so please let me tease it here.
-[^8]: See Practical Foundations of Programming Languages (PFPL) by Bob Harper on page 155
-[^9]: I am pretty sure I learned this trick by reading through one of [Phil Freeman](https://twitter.com/paf31)'s original implementations of Comonadic UI, but I am unable to find the source.
 

@@ -10,7 +10,8 @@ export default function Katex({ children }: { children: React.ReactNode }) {
           // customised options
           // • auto-render specific keys, e.g.:
           delimiters: [
-              {left: '$$', right: '$$', display: false}
+              {left: '$$', right: '$$', display: false},
+              {left: '$', right: '$', display: false}
           ]
       })
     );

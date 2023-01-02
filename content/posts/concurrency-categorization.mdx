@@ -7,7 +7,7 @@ date: "2020-12-31"
 
 ## Preface (2020)
 
-Despite being written far enough ago that many of the concrete examples are irrelevant, I still find myself constantly sharing my concurrency categorization survey post with colleagues and friends whenever we discuss tradeoffs with different concurrency primitives.[^1] Since my old website has bit-rot, I figured I should bring this post here.
+Despite being written far enough ago that many of the concrete examples are irrelevant, I still find myself <Footnote alt={<span>You'd be surprised at how often I talk about this.</span>}>constantly sharing my concurrency categorization survey post with colleagues and friends whenever we discuss tradeoffs with different concurrency primitives</Footnote>. Since my old website has bit-rot, I figured I should bring this post here.
 
 Note also that the content here is scoped to my experience at the time, an engineer who professionally had exclusively developed mobile apps. At this time, Apple had only just released Swift, and as far as I'm aware my organization was the only venture-backed company with any significant Kotlin in production. As such, many of my peers in the mobile space were not comfortable with functional idioms such as using `map` and `reduce` rather than for-loops. These days if I were to write a post like this I would include [coroutine](https://en.wikipedia.org/wiki/Coroutine)s alongside callbacks in the general section. I would also include [Combine](https://developer.apple.com/documentation/combine) and [Loom](https://openjdk.java.net/projects/loom/) under the mobile-app umbrella. Given that I now have worked with Rust and OCaml a bit, I would also include context on OCaml primitives like [Async](https://opensource.janestreet.com/async/), [Lwt](http://ocsigen.org/lwt), and even a discussion on [multicore's algebraic effects](https://kcsrk.info/slides/handlers_edinburgh.pdf), and Rust's [futures](https://docs.rs/futures/0.3.8/futures/).
 
@@ -34,7 +34,7 @@ I’ll talk about how to think about these categories, and then go through vario
 
 ## Referential Transparency
 
-Visible side-effects make code harder to reason over. Containing no or invisible side-effects (such as memoization) is known as referential transparency.[^2] A referentially transparent expression is one that can be replaced by its result without changing the behavior of the program. In this context: Can you replace an expression containing your concurrency primitive with its result. Aka does your concurrency primitive do side-effects when being created or used? Eventually, it must perform side-effects for the concurrency to actually be concurrent. However, the act of starting the concurrent work is decoupled from the work logic. Usually dealing with the primitives that just perform side-effects does make WRITING the code easier, but reasoning over that code is hard.
+Visible side-effects make code harder to reason over. Containing no or invisible side-effects (such as memoization) is known as <Footnote alt={<span>See <CopyLink href="https://en.wikipedia.org/wiki/Referential_transparency">wikipedia</CopyLink> for more</span>}>referential transparency</Footnote>. A referentially transparent expression is one that can be replaced by its result without changing the behavior of the program. In this context: Can you replace an expression containing your concurrency primitive with its result. Aka does your concurrency primitive do side-effects when being created or used? Eventually, it must perform side-effects for the concurrency to actually be concurrent. However, the act of starting the concurrent work is decoupled from the work logic. Usually dealing with the primitives that just perform side-effects does make WRITING the code easier, but reasoning over that code is hard.
 
 ## One Datum or Many Data or Side-effect Data (Unit)
 
@@ -186,5 +186,3 @@ My advice: Avoid side-effects, avoid global state, decouple execution context, p
 
 This post should give you some idea of how to categorize your concurrency primitives if I did not cover it myself, and should help you analyze other concurrency options for your platform. Your choice of concurrency primitive matters: In a modern application, you will be using this primitive all over your codebase &mdash; utilizing the right concurrency primitive will let you and your team achieve both a maintainable and performant application.
 
-[^1]: You'd be surprised at how often I talk about this.
-[^2]: See [wikipedia](https://en.wikipedia.org/wiki/Referential_transparency) for more

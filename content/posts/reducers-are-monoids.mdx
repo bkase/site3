@@ -68,7 +68,7 @@ type Monoid<'a> =
 
 ## Endofunctions are monoids
 
-Endofunctions, or in source code, `Endo`,  are functions from some type to itself[^1]; for example `int -> int` or `Person -> Person`. Endofunctions come up in everyday programming as a mechanism for somewhat paradoxicly describing mutations to data immutably. In other words, we can reify[^2] mutations into values.
+Endofunctions, or in source code, `Endo`,  are <Footnote alt={<span><i>Endo</i> means precisely that the domain and range (of a function) are the same.</span>}>functions from some type to itself</Footnote>; for example `int -> int` or `Person -> Person`. Endofunctions come up in everyday programming as a mechanism for somewhat paradoxicly describing mutations to data immutably. In other words, we can <Footnote alt={<span>To reify is to make the abstract concrete, in this case, it's referring to making a "change" a value we can manipulate instead of just an operation we perform in our programs.</span>}>reify</Footnote> mutations into values.
 
 To see this, let's first implement endofunctions:
 
@@ -284,7 +284,7 @@ let agedFred =
 
 ### The Monoid
 
-The monoid instance provides a way to model a trivial change[^3]. With this addition, we now have a nice base case if we're building up an arbitrary amount of changes based on some runtime information:
+The monoid instance provides a way to model a <Footnote alt={<span>A change that doesn't change anything</span>}>trivial change</Footnote>. With this addition, we now have a nice base case if we're building up an arbitrary amount of changes based on some runtime information:
 
 <CH.Code>
 
@@ -348,7 +348,7 @@ We can further improve on the above by utilizing a [writer monad as described in
 
 ### The Instance
 
-An astute reader may notice "combining changes" is function composition or $\circ$, and the trivial change is the identity function or $id$. Thus the monoid we've been talking about this whole time is $(Endo_A, \circ, id_A)$[^4].
+An astute reader may notice "combining changes" is function composition or $\circ$, and the trivial change is the identity function or $id$. Thus <Footnote alt={<Katex>The subscript $_A$ here is noting that there is a monoid instance for all choices of $A$.</Katex>}>the monoid we've been talking about this whole time is $(Endo_A, \circ, id_A)$</Footnote>.
 
 <CH.Code>
 
@@ -449,7 +449,7 @@ let liftPointwise op f1 f2 x = op (f1 x) (f2 x)
 
 </CH.Code>
 
-An interesting property of pointwise operations is that if the underlying operation is a monoid[^5] then the resulting pointwise operation is a monoid too! I think a nice proof of this is to show the source code that performs this operation for us.
+An interesting property of pointwise operations is that if the <Footnote alt={<span>Moreover, operations lifted pointwise over any algebraic structure are also members of the same algebraic structure (so this is also true for semigroups, and other structures like rings, and semilattices too).</span>}>underlying operation is a monoid</Footnote> then the resulting pointwise operation is a monoid too! I think a nice proof of this is to show the source code that performs this operation for us.
 
 <CH.Code>
 
@@ -638,8 +638,3 @@ Thank you [Thomas Visser](https://twitter.com/thomvis) and [Stephen Celis](https
 
 Reducers show up in two separate places in the comonadic UI framework implementation that I used in [barbq](/posts/introducing-barbq). In comonadic UI components, one of the kinds of reducers is located inside a [writer monad](/posts/ocaml-writer). Most of the time a component won't need to react to any actions, and if this is the case, components are unencumbered by boilerplate specifying a "dummy" reducer. The writer monad just takes `empty` for us. When we need to react to actions here, we can `tell` our component how to react to each one. We're able to get this nice API for free precisely because reducers are monoids.
 
-[^1]: *Endo* means precisely that the domain and range (of a function) are the same.
-[^2]: To reify is to make the abstract concrete, in this case, it's referring to making a "change" a value we can manipulate instead of just an operation we perform in our programs.
-[^3]: A change that doesn't change anything
-[^4]: The subscript $_A$ here is noting that there is a monoid instance for all choices of $A$.
-[^5]: Moreover, operations lifted pointwise over any algebraic structure are also members of the same algebraic structure (so this is also true for semigroups, and other structures like rings, and semilattices too).
