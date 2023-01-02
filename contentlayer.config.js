@@ -1,6 +1,7 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files"
 import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
+import remarkFigureCaption from '@microflash/remark-figure-caption';
 import rehypeKatex from 'rehype-katex';
 
 import { remarkCodeHike } from "@code-hike/mdx"
@@ -57,6 +58,7 @@ export default makeSource({
       [ remarkCodeHike, { theme } ],
       remarkMath,
       remarkGfm,
+      remarkFigureCaption
     ],
     rehypePlugins: [ rehypeKatex ]
   },
