@@ -50,6 +50,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="twitter:description" content="Musings of Brandon Kase" />
         <meta name="twitter:image" content="https://bkase.io/brandon-jacket.jpeg" />
 
+        <link rel="icon" href="/static/icon/favicon-32.png" sizes="32x32" />
+        <link rel="icon" href="/static/icon/favicon-128.png" sizes="128x128" />
+        <link rel="icon" href="/static/icon/favicon-152.png" sizes="152x152" />
+        <link rel="icon" href="/static/icon/favicon-167.png" sizes="167x167" />
+        <link rel="icon" href="/static/icon/favicon-180.png" sizes="180x180" />
+        <link rel="icon" href="/static/icon/favicon-192.png" sizes="192x192" />
+        <link rel="icon" href="/static/icon/favicon-196.png" sizes="196x196" />
+        <link
+          rel="shortcut icon"
+          sizes="196x196"
+          href="/static/icon/favicon-196.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/static/icon/favicon-152.png"
+          sizes="152x152"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/static/icon/favicon-167.png"
+          sizes="167x167"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/static/icon/favicon-180.png"
+          sizes="180x180"
+        />
+
       </head>
       <body className={`${pragmataPro.variable} ${newsCycle.variable} font-friendly md:px-8 lg:px-12`}>
         <div className="container mx-auto px-4 max-w-5xl">
