@@ -39,16 +39,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="description" content="Musings of Brandon Kase" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="bkase.dev" />
-        <meta property="og:url" content="https://bkase.io" />
-        <meta property="og:image" content="https://bkase.io/brandon-jacket.jpeg" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content="bkase.io" />
-        <meta property="twitter:url" content="https://bkase.io" />
-        <meta name="twitter:title" content="bkase.io" />
-        <meta name="twitter:description" content="Musings of Brandon Kase" />
-        <meta name="twitter:image" content="https://bkase.io/brandon-jacket.jpeg" />
 
         <link rel="icon" href="/static/icon/favicon-32.png" sizes="32x32" />
         <link rel="icon" href="/static/icon/favicon-128.png" sizes="128x128" />
