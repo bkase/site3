@@ -30,6 +30,7 @@
     "@microflash/remark-figure-caption": "1.0.0",
     "@next/font": "13.0.6",
     "@next/mdx": "13.0.7",
+    "@vercel/analytics": "0.1.6",
     "clsx": "1.2.1",
     "concurrently": "7.5.0",
     "contentlayer": "0.2.9",

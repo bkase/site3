@@ -1,7 +1,8 @@
 import '@/styles/dist.css';
 import React from 'react';
 import AboutMe from '@/ui/AboutMe';
-import CopyLink from '@/ui/CopyLink';
+
+import { AnalyticsWrapper } from './components/analytics';
 
 import { News_Cycle } from '@next/font/google';
 import localFont from '@next/font/local';
@@ -77,6 +78,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </div>
         </div>
+
+        <AnalyticsWrapper />
       </body>
     </html>
   );
