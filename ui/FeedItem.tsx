@@ -1,5 +1,5 @@
 import React from 'react';
-import { Post } from 'contentlayer/generated';
+import { Post } from 'contentlayer2/generated';
 import Image from 'next/image';
 import Link from 'next/link';
 

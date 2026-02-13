@@ -4,8 +4,8 @@ import AboutMe from '@/ui/AboutMe';
 
 import { AnalyticsWrapper } from './components/analytics';
 
-import { News_Cycle } from '@next/font/google';
-import localFont from '@next/font/local';
+import { News_Cycle } from 'next/font/google';
+import localFont from 'next/font/local';
 
 // Font Awesome
 import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS

@@ -1,10 +1,6 @@
-const { withContentlayer } = require("next-contentlayer");
+const { withContentlayer } = require("next-contentlayer2");
 
 /** @type {import('next').NextConfig} */
 module.exports = withContentlayer({
-  reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
-  experimental: {
-    // Required:
-    appDir: true,
-  }
+  reactStrictMode: true,
 });

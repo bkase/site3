@@ -19,7 +19,7 @@
       "@/ui/*": ["ui/*"],
       "@/lib/*": ["lib/*"],
       "@/styles/*": ["styles/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"]
+      "contentlayer2/generated": ["./.contentlayer/generated"]
     },
     "plugins": [
       {

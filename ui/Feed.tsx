@@ -1,5 +1,5 @@
 import React from 'react';
-import { Post } from 'contentlayer/generated';
+import { Post } from 'contentlayer2/generated';
 import FeedItem from './FeedItem';
 
 export default function Feed({ posts }: { posts: Post[] }) {

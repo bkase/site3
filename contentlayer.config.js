@@ -1,4 +1,4 @@
-import { defineDocumentType, makeSource } from "contentlayer/source-files"
+import { defineDocumentType, makeSource } from "contentlayer2/source-files"
 import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
 import remarkFigureCaption from '@microflash/remark-figure-caption';
